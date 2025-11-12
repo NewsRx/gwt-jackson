@@ -4,16 +4,34 @@
 
 plugins {
     id 'java-library'
+    id 'org.docstr.gwt'
+}
+
+gwt {
+    gwtVersion = '2.12.2'
+    modules = ['com.github.nmorel.gwtjackson.GwtJackson']
+    //jvmArgs '-Xmx2048m'
+}
+
+repositories {
+    mavenCentral()
+    google()
+    maven { url 'https://packages.jetbrains.team/maven/p/ij/intellij-dependencies/' }
+    maven { url 'https://jitpack.io' }
+    maven { url 'https://github.com/psiegman/mvn-repo/raw/master/releases' }
 }
 
 dependencies {
-    api 'com.fasterxml.jackson.core:jackson-annotations:2.9.6'
-    api 'com.fasterxml.jackson.core:jackson-annotations:2.9.6'
-    api 'com.squareup:javapoet:1.0.0'
+    compileOnly("org.gwtproject:gwt-user:2.12.2")
+    compileOnly("org.gwtproject:gwt-dev:2.12.2")
+    compileOnly 'jakarta.servlet:jakarta.servlet-api:6.1.0'
+    compileOnly 'com.fasterxml.jackson.core:jackson-annotations:2.8.11'
+    compileOnly 'jakarta.ws.rs:jakarta.ws.rs-api:4.0.0'
+    compileOnly 'com.squareup:javapoet:1.13.0'
     testImplementation 'junit:junit:4.12'
-    testImplementation 'com.fasterxml.jackson.core:jackson-databind:2.9.6'
-    compileOnly 'com.google.gwt:gwt-user:2.7.0'
-    compileOnly 'com.google.gwt:gwt-dev:2.7.0'
+    testImplementation 'com.fasterxml.jackson.core:jackson-databind:2.8.11'
+//    compileOnly 'com.google.gwt:gwt-user:2.12.2'
+//    compileOnly 'com.google.gwt:gwt-dev:2.12.2'
 }
 
 description = 'gwt-jackson :: API'
