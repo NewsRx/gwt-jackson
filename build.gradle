@@ -7,10 +7,25 @@ plugins {
     id 'org.docstr.gwt'
 }
 
+java.sourceCompatibility = JavaLanguageVersion.of(17)
+java.toolchain.languageVersion.set(JavaLanguageVersion.of(21))
+java.withSourcesJar()
+sourcesJar {
+    from(sourceSets.main.allSource)
+    from(tasks.named("compileJava").map { it.outputs.files })
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
+}
+jar {
+    from sourceSets.main.allSource // include sources for use by gwt
+    from(tasks.named("compileJava").map { it.outputs.files })
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
+}
+sourcesJar.dependsOn compileJava
+processResources.dependsOn compileJava
+
 gwt {
     gwtVersion = '2.12.2'
     modules = ['com.github.nmorel.gwtjackson.GwtJackson']
-    //jvmArgs '-Xmx2048m'
 }
 
 repositories {
@@ -25,13 +40,11 @@ dependencies {
     compileOnly("org.gwtproject:gwt-user:2.12.2")
     compileOnly("org.gwtproject:gwt-dev:2.12.2")
     compileOnly 'jakarta.servlet:jakarta.servlet-api:6.1.0'
-    compileOnly 'com.fasterxml.jackson.core:jackson-annotations:2.8.11'
+    api 'com.fasterxml.jackson.core:jackson-annotations:2.8.11'
     compileOnly 'jakarta.ws.rs:jakarta.ws.rs-api:4.0.0'
-    compileOnly 'com.squareup:javapoet:1.13.0'
+    api 'com.squareup:javapoet:1.13.0'
     testImplementation 'junit:junit:4.12'
     testImplementation 'com.fasterxml.jackson.core:jackson-databind:2.8.11'
-//    compileOnly 'com.google.gwt:gwt-user:2.12.2'
-//    compileOnly 'com.google.gwt:gwt-dev:2.12.2'
 }
 
 description = 'gwt-jackson :: API'
